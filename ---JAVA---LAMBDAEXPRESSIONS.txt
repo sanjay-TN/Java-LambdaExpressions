@@ -26,17 +26,17 @@ OR
 example:
 	normal java function		|	Lambda function
 	public void m1(int a,int b)	|	(a,b)->syso(a+b);
-	{				|
-		syso(a+b);		|
+	{							|
+		syso(a+b);				|
 	}
 
 --if functions return some values--
-					|	(a)->{return (a*a) ;};[If we need a return statements, then we use curly braces in lambda functions]. 
+								|	(a)->{return (a*a) ;};[If we need a return statements, then we use curly braces in lambda functions]. 
 public void m1(int a)			|			
-{					|	or
-return(a*a);				|	(a)->a*a;
-}					|	or	
-					|	a->a*a; [if we have single variable then can neglect the braces.]
+{								|	or
+return(a*a);					|	(a)->a*a;
+}								|	or	
+								|	a->a*a; [if we have single variable then can neglect the braces.]
 
 -EXAMPLES-----------------------------------------------
 n-> return n*n [invalid].
@@ -62,18 +62,18 @@ n->n*n;[valid].
 example-----------------
 valid				|	invalid
 interface i			|	interface i
-{				|	{
-public void m1();		|	public void m1();
-}				|	public void m2();
-				|	}
-@functional Interface		|		
+{					|	{
+public void m1();	|	public void m1();
+}					|	public void m2();
+					|	}
+@functional Interface		
 interface i			|
-{				|	
-public void m1();		|
-default m2()			|
-	{			|
+{					|	
+public void m1();	|
+default m2()		|
+	{				|
 	syso("a");		|
-	}			|
+	}				|
 }
 
 @functional Interface--- this annotation is used to explicitly call functional interface, it is optional. If we call it then it will not allow interface to create more than one abstract method.
@@ -214,4 +214,5 @@ Predicate<T>	      |	test()	   |
 Function<T,R>	      | apply()    | 
 Consumer<T> 	      |	accept()   | 
 Supplier<R> 	      |	get()      |
+
 ------------------------------------
