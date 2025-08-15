@@ -1,0 +1,217 @@
+Since java is a object oriented programming language, Lambda expressions in java introduced to bring functional programming features.
+
+--> in oop, data stored in form of objects and classes.
+--> in functional programming, data is stored in the form of functions and variables.
+
+objective of lambda expressions:
+	1)To bring functional programming features.
+	2)code optimization[concise code].
+
+
+** Lambda expression is a Anonymous function, it is represented by arrow mark[->].**
+ANONYMOUS FUNCTION ---> Name less function, no return type, no access modifier.
+
+--> writing lambda expression in java
+	
+example	()->					
+	{
+ 	 System.Out.println("hello");
+	}
+
+OR
+ 	()->System.Out.print("hello");
+
+
+-> In lambda expression we need not to define the type of the variable, at the run time the runtime compiler will automatically find the type of variable based on the context.
+example:
+	normal java function		|	Lambda function
+	public void m1(int a,int b)	|	(a,b)->syso(a+b);
+	{				|
+		syso(a+b);		|
+	}
+
+--if functions return some values--
+					|	(a)->{return (a*a) ;};[If we need a return statements, then we use curly braces in lambda functions]. 
+public void m1(int a)			|			
+{					|	or
+return(a*a);				|	(a)->a*a;
+}					|	or	
+					|	a->a*a; [if we have single variable then can neglect the braces.]
+
+-EXAMPLES-----------------------------------------------
+n-> return n*n [invalid].
+n->{return n*n;}; [valid].
+n->{return n*n};[invalid] semicolon missing.
+n->{n*n;};[invalid].
+n->n*n;[valid].
+......................................
+
+***Invoking lambda expressions.[calling lambda functions]***
+	*) To invoke lambda expression we need  Functional Interface.
+	*) Without functional interfaces we cannot invoke lambda Expressions.
+
+-> Functional Interface:
+	*) If any interface contains only single abstract method is called as functional interface.
+	*) It supports only single abstract methods[SAM].
+	*) In functional interface we can have any number of default and static methods.
+	*) Default functional interface includes 
+		1)Runnable -> run()
+		2)Callable -> call()
+		3)Comparable -> compareTo()
+		4)ActionListener -> actionPerformed()
+example-----------------
+valid				|	invalid
+interface i			|	interface i
+{				|	{
+public void m1();		|	public void m1();
+}				|	public void m2();
+				|	}
+@functional Interface		|		
+interface i			|
+{				|	
+public void m1();		|
+default m2()			|
+	{			|
+	syso("a");		|
+	}			|
+}
+
+@functional Interface--- this annotation is used to explicitly call functional interface, it is optional. If we call it then it will not allow interface to create more than one abstract method.
+-------------------------------------------------------------------------------------------
+Pre defined functional interfaces in java [having only one abstract method].
+	1)Predicate
+	2)Function   
+	3)Consumer
+	4)Supplier
+**these pre defined functions are available in java.util.function **
+-------------------------------------------------------------------------------------------
+1)--->Predicate 
+	*) it is one of the pre-defined functional interface
+	*) it contain single abstract method that is test, and it always takes a single parameter and it returns Boolean value.
+	*) it is used when we have conditional checks in code.
+	Example:
+		interface Predicate(T)
+		{
+			public abstract boolean test(t);
+		}
+We can join multiple predicates using and, or, negate().
+Example for and, or, negate().
+
+	import java.util.function.Predicate;
+	public class Demo3 {
+
+	public static void main(String[] args) {
+		int a[] = {5,15,20,25,30,35,40,45,50,55,60,65};
+		Predicate<Integer> p1 = i->(i%2==0);
+		Predicate<Integer> p2 = i->(i>50);
+		// for and operator &&
+		System.out.println("for and operator");
+		for(Integer i1:a)
+		{
+ 
+			if(p1.and(p2).test(i1))
+			{
+				System.out.println(i1);
+			}
+		}
+		// for or operator ||
+
+		System.out.println("for or operator");
+		for(Integer i:a)
+		{
+ 
+			if(p1.or(p2).test(i))
+			{
+				System.out.println(i);
+			}
+		}
+		// for negate operator
+
+		System.out.println("for negate operator");
+		for(Integer i2:a)
+		{ 
+			if(p1.negate().test(i2))
+
+			{
+				System.out.println(i2);
+			}
+		}
+	}
+
+}
+-------------------------------------------------------------------------------------------
+2)---> Function
+	*)it is one of the pre-defined functional interface.
+	*)it is used when we want return value rather than the Boolean value.
+	*)it contain single abstract method that is apply() method, it takes any type of parameter and return single value of any type.
+	Example:
+		interface Function<T,R>
+		{
+			public return apply(T);
+		}
+//here T=type of argument and R=return type.
+
+-->Function chaining [combining]
+	*)andthen(): it will first execute fn then give result to f to execute[refer below example for fn and f].
+	*)compose(): it will first execute f thn gives result to fn to execute.
+	Example:
+	
+	import java.util.function.Function;
+	public class Demo3 {
+
+	public static void main(String[] args) {
+		
+		Function<Integer,Integer> fn = n->n*2;
+		Function<Integer,Integer> f = n->n*n*n;
+		System.out.println(fn.andThen(f).apply(2)); // 64
+		System.out.println(fn.compose(f).apply(2)); // 16
+		
+	}
+
+}
+
+Predicate--->takes parameter type --->returns Boolean value (true or false). it uses[test()].
+Function --->takes parameter type, Return type--->returns some type. it will use [apply()].
+-------------------------------------------------------------------------------------------
+3)--->Consumer
+	*)it is one of the pre-defined functional interface.
+	*)it has accept() abstract method.
+	*)it will take a single parameter as input but it does not return anything.
+	Example:
+import java.util.function.Consumer;
+
+public class Demo1 {
+
+	public static void main(String[] args) {
+		Consumer<String> c =s->System.out.println(s);
+		c.accept("welcome");
+		
+	}
+
+}
+-------------------------------------------------------------------------------------------
+4)--->Supplier
+	*)it is one of the pre-defined functional interface.
+	*)it has get() abstract method.
+	*)i cannot take any parameter but it will return some element.
+	Example
+import java.util.Date;
+import java.util.function.Supplier;
+
+public class Demo1 {
+
+	public static void main(String[] args) {
+		Supplier<Date> s = ()->new Date();
+		System.out.println(s.get());
+
+	}
+
+}
+-------------------------------------------------------------------------------------------
+Functional interfaces |	methods    |
+-----------------------------------|
+Predicate<T>	      |	test()	   |
+Function<T,R>	      | apply()    | 
+Consumer<T> 	      |	accept()   | 
+Supplier<R> 	      |	get()      |
+------------------------------------
